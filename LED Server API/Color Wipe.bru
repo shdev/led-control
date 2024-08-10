@@ -1,0 +1,19 @@
+meta {
+  name: Color Wipe
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://{{led_server_host}}:{{led_server_port}}/color_wipe
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {"color": [0, 255, 0], "wait_ms": 50}
+}

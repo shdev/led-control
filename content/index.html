@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Control</title>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Bootstrap CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding-top: 50px;
+        }
+        .control-panel {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="control-panel bg-light">
+            <img src="led_server_logo.png" alt="LED Server Logo" class="logo">
+            <h1 class="text-center">LED Control</h1>
+
+            <div class="mb-3">
+                <label for="color" class="form-label">Set Color:</label>
+                <input type="color" id="color" class="form-control" value="#ff0000">
+                <button onclick="setColor()" class="btn btn-primary mt-2">Set Color</button>
+            </div>
+
+            <div class="mb-3">
+                <label for="wait_ms_color_wipe" class="form-label">Color Wipe Wait (ms):</label>
+                <input type="number" id="wait_ms_color_wipe" class="form-control" value="50">
+                <button onclick="colorWipe()" class="btn btn-primary mt-2">Color Wipe</button>
+            </div>
+
+            <div class="mb-3">
+                <label for="wait_ms_theater_chase" class="form-label">Theater Chase Wait (ms):</label>
+                <input type="number" id="wait_ms_theater_chase" class="form-control" value="50">
+                <label for="iterations_theater_chase" class="form-label mt-2">Theater Chase Iterations:</label>
+                <input type="number" id="iterations_theater_chase" class="form-control" value="-1">
+                <button onclick="theaterChase()" class="btn btn-primary mt-2">Theater Chase</button>
+            </div>
+
+            <div class="mb-3">
+                <label for="wait_ms_rainbow_cycle" class="form-label">Rainbow Cycle Wait (ms):</label>
+                <input type="number" id="wait_ms_rainbow_cycle" class="form-control" value="20">
+                <label for="iterations_rainbow_cycle" class="form-label mt-2">Rainbow Cycle Iterations:</label>
+                <input type="number" id="iterations_rainbow_cycle" class="form-control" value="-1">
+                <button onclick="rainbowCycle()" class="btn btn-primary mt-2">Rainbow Cycle</button>
+            </div>
+
+            <div class="mb-3">
+                <label for="wait_ms_pulse_center" class="form-label">Pulse from Center Wait (ms):</label>
+                <input type="number" id="wait_ms_pulse_center" class="form-control" value="50">
+                <label for="iterations_pulse_center" class="form-label mt-2">Pulse from Center Iterations:</label>
+                <input type="number" id="iterations_pulse_center" class="form-control" value="-1">
+                <button onclick="pulseFromCenter()" class="btn btn-primary mt-2">Pulse from Center</button>
+            </div>
+
+            <button onclick="clearStrip()" class="btn btn-danger">Clear</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.bundle.min.js"></script>
+
+    <script>
+        function setColor() {
+            const color = document.getElementById('color').value.substring(1);
+            const rgb = hexToRgb(color);
+            fetch('/set_color', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ color: rgb }),
+            });
+        }
+
+        function clearStrip() {
+            fetch('/clear', {
+                method: 'POST',
+            });
+        }
+
+        function colorWipe() {
+            const color = document.getElementById('color').value.substring(1);
+            const waitMs = document.getElementById('wait_ms_color_wipe').value;
+            const rgb = hexToRgb(color);
+            fetch('/color_wipe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ color: rgb, wait_ms: waitMs }),
+            });
+        }
+
+        function theaterChase() {
+            const color = document.getElementById('color').value.substring(1);
+            const waitMs = document.getElementById('wait_ms_theater_chase').value;
+            const iterations = document.getElementById('iterations_theater_chase').value;
+            const rgb = hexToRgb(color);
+            fetch('/theater_chase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ color: rgb, wait_ms: waitMs, iterations: iterations }),
+            });
+        }
+
+        function rainbowCycle() {
+            const waitMs = document.getElementById('wait_ms_rainbow_cycle').value;
+            const iterations = document.getElementById('iterations_rainbow_cycle').value;
+            fetch('/rainbow_cycle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ wait_ms: waitMs, iterations: iterations }),
+            });
+        }
+
+        function pulseFromCenter() {
+            const color = document.getElementById('color').value.substring(1);
+            const waitMs = document.getElementById('wait_ms_pulse_center').value;
+            const iterations = document.getElementById('iterations_pulse_center').value;
+            const rgb = hexToRgb(color);
+            fetch('/pulse_from_center', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ color: rgb, wait_ms: waitMs, iterations: iterations }),
+            });
+        }
+
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex, 16);
+            const r = (bigint >> 16) & 255;
+            const g = (bigint >> 8) & 255;
+            const b = bigint & 255;
+            return [r, g, b];
+        }
+    </script>
+</body>
+</html>

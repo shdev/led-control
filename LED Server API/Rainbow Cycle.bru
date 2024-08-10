@@ -1,0 +1,19 @@
+meta {
+  name: Rainbow Cycle
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://{{led_server_host}}:{{led_server_port}}/rainbow_cycle
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {"wait_ms": 20, "iterations": 5}
+}

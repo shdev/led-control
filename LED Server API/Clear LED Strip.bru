@@ -1,0 +1,15 @@
+meta {
+  name: Clear LED Strip
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://{{led_server_host}}:{{led_server_port}}/clear
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}

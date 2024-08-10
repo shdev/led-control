@@ -1,0 +1,151 @@
+{
+  "info": {
+    "name": "LED Server API",
+    "_postman_id": "a1234567-89ab-cdef-0123-456789abcdef",
+    "description": "Collection to test the LED Server API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Set Color",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"color\": [255, 0, 0]}"
+        },
+        "url": {
+          "raw": "http://{{led_server_host}}:{{led_server_port}}/set_color",
+          "host": [
+            "http://{{led_server_host}}"
+          ],
+          "port": "{{led_server_port}}",
+          "path": [
+            "set_color"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Clear LED Strip",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://{{led_server_host}}:{{led_server_port}}/clear",
+          "host": [
+            "http://{{led_server_host}}"
+          ],
+          "port": "{{led_server_port}}",
+          "path": [
+            "clear"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Color Wipe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"color\": [0, 255, 0], \"wait_ms\": 50}"
+        },
+        "url": {
+          "raw": "http://{{led_server_host}}:{{led_server_port}}/color_wipe",
+          "host": [
+            "http://{{led_server_host}}"
+          ],
+          "port": "{{led_server_port}}",
+          "path": [
+            "color_wipe"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Theater Chase",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"color\": [0, 0, 255], \"wait_ms\": 50, \"iterations\": 10}"
+        },
+        "url": {
+          "raw": "http://{{led_server_host}}:{{led_server_port}}/theater_chase",
+          "host": [
+            "http://{{led_server_host}}"
+          ],
+          "port": "{{led_server_port}}",
+          "path": [
+            "theater_chase"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Rainbow Cycle",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"wait_ms\": 20, \"iterations\": 5}"
+        },
+        "url": {
+          "raw": "http://{{led_server_host}}:{{led_server_port}}/rainbow_cycle",
+          "host": [
+            "http://{{led_server_host}}"
+          ],
+          "port": "{{led_server_port}}",
+          "path": [
+            "rainbow_cycle"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "led_server_host",
+      "value": "192.168.50.51"
+    },
+    {
+      "key": "led_server_port",
+      "value": "5000"
+    }
+  ]
+}

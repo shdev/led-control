@@ -1,0 +1,19 @@
+meta {
+  name: Set Color
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://{{led_server_host}}:{{led_server_port}}/set_color
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {"color": [255, 0, 0]}
+}

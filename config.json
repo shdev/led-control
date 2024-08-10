@@ -1,0 +1,4 @@
+{
+    "LED_COUNT": 56,
+    "LED_PIN": "D18"
+}
